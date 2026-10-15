@@ -1,0 +1,25 @@
+{% extends 'tours/base.html' %}
+{% load static %}
+
+{% block title %}Cart | TheTripMitra{% endblock %}
+
+{% block content %}
+<main class="section-pad page-offset">
+    <div class="container">
+        <h1 class="section-title mb-4">Your travel cart</h1>
+        <div class="row g-4">
+            <div class="col-lg-8">
+                <div class="summary reveal-up" id="cartItems">
+                    <!-- Rendered by JavaScript -->
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="summary reveal-right" id="orderSummary">
+                    <!-- Rendered by JavaScript -->
+                </div>
+                <a id="checkoutBtn" href="{% url 'checkout' %}" class="btn btn-brand w-100 mt-3">Proceed to checkout</a>
+            </div>
+        </div>
+    </div>
+</main>
+{% endblock %}

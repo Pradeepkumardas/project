@@ -1,0 +1,134 @@
+{% extends 'tours/base.html' %}
+{% load static %}
+
+{% block title %}TheTripMitra | Travel Packages{% endblock %}
+
+{% block content %}
+<header class="hero hero-standard">
+    <div class="container">
+        <div class="row align-items-center min-vh-75 g-4">
+            <div class="col-lg-6">
+                <p class="eyebrow text-warning">Tourist places and stays</p>
+                <h1>Plan a beautiful holiday with the right hotel.</h1>
+                <p class="lead my-4">Search curated tourist places, tour packages, and comfortable hotels for your next trip.</p>
+                <div class="d-flex flex-wrap gap-3">
+                    <a class="btn btn-brand btn-lg" href="{% url 'tours' %}">Explore tours</a>
+                    <a class="btn btn-light btn-lg" href="{% url 'contact' %}">Plan with us</a>
+                </div>
+            </div>
+            <div class="col-lg-5 ms-lg-auto">
+                <form class="hero-search travel-search" action="{% url 'tours' %}">
+                    <h2 class="h4 mb-3">Search your place</h2>
+                    <div class="row g-3">
+                        <div class="col-12">
+                            <label class="form-label" for="destination">Place or destination</label>
+                            <input class="form-control" id="destination" name="destination" list="placeOptions" placeholder="Search Bali, Dubai, London...">
+                            <datalist id="placeOptions">
+                                <option value="Bali"></option>
+                                <option value="Dubai"></option>
+                                <option value="Hong Kong"></option>
+                                <option value="London"></option>
+                                <option value="Paris"></option>
+                                <option value="Singapore"></option>
+                                <option value="Sri Lanka"></option>
+                                <option value="Switzerland"></option>
+                                <option value="Thailand"></option>
+                            </datalist>
+                        </div>
+                        <div class="col-sm-6">
+                            <label class="form-label" for="month">Travel month</label>
+                            <input class="form-control" id="month" name="month" type="month">
+                        </div>
+                        <div class="col-sm-6">
+                            <label class="form-label" for="travelers">Travelers</label>
+                            <select class="form-select" id="travelers" name="travelers">
+                                <option>1 traveler</option>
+                                <option selected>2 travelers</option>
+                                <option>3 travelers</option>
+                                <option>4+ travelers</option>
+                            </select>
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label" for="budget">Budget range</label>
+                            <select class="form-select" id="budget" name="budget">
+                                <option selected>Flexible budget</option>
+                                <option>Under Rs. 50,000</option>
+                                <option>Rs. 50,000 - Rs. 1,00,000</option>
+                                <option>Rs. 1,00,000 - Rs. 2,00,000</option>
+                                <option>Above Rs. 2,00,000</option>
+                            </select>
+                        </div>
+                        <div class="col-12">
+                            <button class="btn btn-brand w-100 py-3" type="submit"><i class="bi bi-search"></i> Search tours</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</header>
+
+<main>
+    <section class="section-pad">
+        <div class="container">
+            <div class="row align-items-end mb-4 reveal-up">
+                <div class="col-lg-7">
+                    <p class="eyebrow">Popular packages</p>
+                    <h2 class="section-title">Experiences travelers book most</h2>
+                </div>
+                <div class="col-lg-5 text-lg-end">
+                    <a class="btn btn-outline-brand" href="{% url 'tours' %}">View all packages</a>
+                </div>
+            </div>
+            <div class="row g-4" id="featuredProducts">
+                <!-- Rendered by JavaScript -->
+            </div>
+        </div>
+    </section>
+
+    <section class="section-pad hotel-section">
+        <div class="container">
+            <div class="row align-items-end mb-4 reveal-up">
+                <div class="col-lg-7">
+                    <p class="eyebrow">Hotels</p>
+                    <h2 class="section-title">Choose from 6 beautiful hotels near top tourist places</h2>
+                </div>
+                <div class="col-lg-5 text-lg-end">
+                    <a class="btn btn-outline-brand" href="{% url 'destinations' %}">View hotel options</a>
+                </div>
+            </div>
+            <div class="row g-4" id="hotelGrid">
+                <!-- Rendered by JavaScript -->
+            </div>
+        </div>
+    </section>
+
+    <section class="soft section-pad">
+        <div class="container">
+            <div class="row g-4 text-center">
+                <div class="col-md-4">
+                    <div class="feature reveal-up">
+                        <i class="bi bi-map"></i>
+                        <h3>Curated routes</h3>
+                        <p>Balanced itineraries that leave room for both landmarks and local discovery.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="feature reveal-up" style="--reveal-delay:.12s">
+                        <i class="bi bi-shield-check"></i>
+                        <h3>Clear support</h3>
+                        <p>Helpful guidance before and during your trip, without confusing package terms.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="feature reveal-up" style="--reveal-delay:.24s">
+                        <i class="bi bi-wallet2"></i>
+                        <h3>Budget fit</h3>
+                        <p>Packages across domestic, Asian, and long-haul places.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+{% endblock %}

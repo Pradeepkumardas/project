@@ -1,0 +1,22 @@
+{% extends 'tours/base.html' %}
+{% load static %}
+
+{% block title %}Tours | TheTripMitra{% endblock %}
+
+{% block content %}
+<header class="page-banner">
+    <div class="container text-center">
+        <p class="eyebrow text-warning">Find your escape</p>
+        <h1>Tour packages</h1>
+        <p class="lead">Choose a place and add it to your travel cart.</p>
+    </div>
+</header>
+
+<main class="section-pad">
+    <div class="container">
+        <div class="row g-4" id="productGrid">
+            <!-- Rendered by JavaScript -->
+        </div>
+    </div>
+</main>
+{% endblock %}

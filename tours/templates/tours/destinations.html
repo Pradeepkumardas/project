@@ -1,0 +1,22 @@
+{% extends 'tours/base.html' %}
+{% load static %}
+
+{% block title %}Hotels | TheTripMitra{% endblock %}
+
+{% block content %}
+<header class="page-banner">
+    <div class="container text-center">
+        <p class="eyebrow text-warning">Stay options</p>
+        <h1>Featured hotels</h1>
+        <p class="lead">Browse hotel-friendly places currently available in our package list.</p>
+    </div>
+</header>
+
+<main class="section-pad">
+    <div class="container">
+        <div class="row g-4" id="destinationGrid">
+            <!-- Rendered by JavaScript -->
+        </div>
+    </div>
+</main>
+{% endblock %}

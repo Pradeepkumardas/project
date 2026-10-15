@@ -1,0 +1,113 @@
+{% extends "admin/base_site.html" %}
+{% load i18n static %}
+
+{% block title %}{% if form.errors %}{% translate "Error:" %} {% endif %}{{ block.super }}{% endblock %}
+{% block extrastyle %}{{ block.super }}<link rel="stylesheet" href="{% static "admin/css/login.css" %}" {% csp_nonce_attr %}>
+{% csp_nonce_attr form.media %}
+{% endblock %}
+
+{% block bodyclass %}{{ block.super }} login{% endblock %}
+
+{% block usertools %}{% endblock %}
+
+{% block nav-global %}{% endblock %}
+
+{% block nav-sidebar %}{% endblock %}
+
+{% block content_title %}{% endblock %}
+
+{% block nav-breadcrumbs %}{% endblock %}
+
+{% block content %}
+{% if form.errors and not form.non_field_errors %}
+<p class="errornote">
+{% blocktranslate count counter=form.errors.items|length %}Please correct the error below.{% plural %}Please correct the errors below.{% endblocktranslate %}
+</p>
+{% endif %}
+
+{% if form.non_field_errors %}
+{% for error in form.non_field_errors %}
+<p class="errornote">
+    {{ error }}
+</p>
+{% endfor %}
+{% endif %}
+
+<div id="content-main">
+
+{% if user.is_authenticated %}
+<p class="errornote">
+{% blocktranslate trimmed %}
+    You are authenticated as {{ username }}, but are not authorized to
+    access this page. Would you like to login to a different account?
+{% endblocktranslate %}
+</p>
+{% endif %}
+
+<form action="{{ app_path }}" method="post" id="login-form" autocomplete="off">{% csrf_token %}
+  <div class="form-row">
+    {{ form.username.errors }}
+    {{ form.username.label_tag }} {{ form.username }}
+  </div>
+  <div class="form-row">
+    {{ form.password.errors }}
+    {{ form.password.label_tag }} {{ form.password }}
+    <input type="hidden" name="next" value="{{ next }}">
+  </div>
+  {% url 'admin_password_reset' as password_reset_url %}
+  {% if password_reset_url %}
+  <div class="password-reset-link">
+    <a href="{{ password_reset_url }}">{% translate 'Forgotten your login credentials?' %}</a>
+  </div>
+  {% endif %}
+  <div class="submit-row">
+    <input type="submit" value="{% translate 'Log in' %}">
+  </div>
+</form>
+
+</div>
+
+<script>
+    // Keep the admin login form blank: browsers auto-fill previously saved
+    // username/password even when nothing was entered. Wipe both fields until
+    // the visitor actually touches the form.
+    (function () {
+        var started = Date.now();
+        var userTyping = false;
+        var guard = null;
+        var target = '#login-form input[name="username"], #login-form input[name="password"]';
+
+        function wipe() {
+            if (userTyping) return;
+            document.querySelectorAll(target).forEach(function (el) {
+                if (el.value) el.value = "";
+            });
+        }
+
+        function release() {
+            if (userTyping) return;
+            userTyping = true;
+            if (guard) clearInterval(guard);
+            guard = null;
+        }
+
+        document.addEventListener("DOMContentLoaded", function () {
+            wipe();
+            // Chrome/Edge fill in saved fields moments AFTER load, so keep
+            // wiping (short window) until the visitor really interacts.
+            guard = setInterval(function () {
+                if (Date.now() - started > 5000) { clearInterval(guard); return; }
+                wipe();
+            }, 100);
+
+            document.querySelectorAll(target).forEach(function (el) {
+                el.addEventListener("focus", release);
+                el.addEventListener("input", release);
+            });
+        });
+
+        window.addEventListener("pageshow", wipe);
+        window.addEventListener("load", wipe);
+    })();
+</script>
+{% endblock %}

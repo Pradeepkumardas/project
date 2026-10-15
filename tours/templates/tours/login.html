@@ -1,0 +1,118 @@
+{% extends 'tours/base.html' %}
+{% load static %}
+
+{% block title %}Login | TheTripMitra{% endblock %}
+
+{% block content %}
+<main class="auth page-offset">
+    <div class="auth-card auth-card-split reveal-zoom">
+        <aside class="auth-aside">
+            <a class="site-brand" href="{% url 'home' %}" aria-label="TheTripMitra home">
+                <span class="brand-mark"><i class="bi bi-send-fill"></i></span>
+                <span class="brand-copy">
+                    <span class="brand-title">TheTrip</span>
+                    <span class="brand-accent">Mitra</span>
+                </span>
+            </a>
+            <div>
+                <h2>Your next adventure starts here.</h2>
+                <p>Sign in to manage bookings, save favorite trips, and unlock member-only travel deals.</p>
+                <ul class="auth-aside-points">
+                    <li><i class="bi bi-shield-check"></i> Secure traveler account</li>
+                    <li><i class="bi bi-calendar-heart"></i> Book tours &amp; hotels in minutes</li>
+                    <li><i class="bi bi-headset"></i> 24&times;7 trip support</li>
+                </ul>
+            </div>
+            <p class="auth-aside-foot">Travel smarter with TheTripMitra.</p>
+        </aside>
+
+        <section class="auth-form-panel">
+            <h1 class="h3 text-center">Welcome back</h1>
+            <p class="text-center auth-sub">Sign in to manage your adventures.</p>
+
+            <form class="auth-form" method="post" novalidate autocomplete="off">
+                {% csrf_token %}
+                {% if request.GET.next %}<input type="hidden" name="next" value="{{ request.GET.next }}">{% endif %}
+
+                <div class="form-floating mb-3 auth-field">
+                    <input id="loginEmail" required type="email" class="form-control"
+                           placeholder="name@example.com" name="email" autocomplete="off">
+                    <label for="loginEmail"><i class="bi bi-envelope me-1"></i>Email address</label>
+                </div>
+
+                <div class="form-floating mb-2 auth-field">
+                    <input id="loginPassword" required type="password" class="form-control"
+                           placeholder="Password" name="password" autocomplete="new-password">
+                    <label for="loginPassword"><i class="bi bi-lock me-1"></i>Password</label>
+                    <button type="button" class="auth-pw-toggle" data-target="loginPassword" aria-label="Show password">
+                        <i class="bi bi-eye"></i>
+                    </button>
+                </div>
+
+                <div class="auth-options d-flex align-items-center justify-content-between flex-wrap gap-2">
+                    <div class="form-check m-0">
+                        <input class="form-check-input" type="checkbox" id="rememberMe" name="remember">
+                        <label class="form-check-label" for="rememberMe">Remember me</label>
+                    </div>
+                    <a class="auth-forgot" href="#">Forgot password?</a>
+                </div>
+
+                <button class="btn btn-brand w-100 auth-submit" type="submit">
+                    <span>Sign in</span>
+                    <i class="bi bi-arrow-right-circle-fill"></i>
+                </button>
+            </form>
+
+            <div class="auth-divider"><span>or</span></div>
+
+            <p class="text-center mt-3 mb-0">
+                New here? <a class="auth-link" href="{% url 'signup' %}">Create account</a>
+            </p>
+        </section>
+    </div>
+</main>
+
+<script>
+    // Keep the login form blank: browsers auto-fill previously saved
+    // email/password without us entering anything. Wipe both fields until the
+    // visitor actually touches the form.
+    (function () {
+        var started = Date.now();
+        var userTyping = false;
+        var guard = null;
+
+        function wipe() {
+            if (userTyping) return;
+            var email = document.querySelector('input[name="email"]');
+            var password = document.querySelector('input[name="password"]');
+            if (email && email.value) email.value = "";
+            if (password && password.value) password.value = "";
+        }
+
+        function release() {
+            if (userTyping) return;
+            userTyping = true;
+            if (guard) clearInterval(guard);
+            guard = null;
+        }
+
+        document.addEventListener("DOMContentLoaded", function () {
+            wipe();
+            // Chrome/Edge fill in saved fields moments AFTER page load, so keep
+            // wiping (for a short window) until the visitor really interacts.
+            guard = setInterval(function () {
+                if (Date.now() - started > 5000) { clearInterval(guard); return; }
+                wipe();
+            }, 100);
+
+            document.querySelectorAll('input[name="email"], input[name="password"]').forEach(function (el) {
+                el.addEventListener("focus", release);
+                el.addEventListener("input", release);
+            });
+        });
+
+        window.addEventListener("pageshow", wipe);
+        window.addEventListener("load", wipe);
+    })();
+</script>
+{% endblock %}

@@ -1,0 +1,15 @@
+{% extends 'tours/base.html' %}
+{% load static %}
+
+{% block title %}London | TheTripMitra{% endblock %}
+
+{% block content %}
+<header class="page-banner">
+    <div class="container text-center">
+        <p class="eyebrow text-warning">Featured trip</p>
+        <h1>London</h1>
+        <p class="lead">View the full package list and add London to your cart.</p>
+        <a class="btn btn-brand btn-lg" href="{% url 'tours' %}">Browse tours</a>
+    </div>
+</header>
+{% endblock %}

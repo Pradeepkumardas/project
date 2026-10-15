@@ -1,0 +1,108 @@
+﻿{% extends 'tours/base.html' %}
+{% load static %}
+
+{% block title %}Checkout | TheTripMitra{% endblock %}
+
+{% block content %}
+<main class="section-pad page-offset">
+    <div class="container">
+        {% if booking %}
+        <div class="summary p-4 mb-5 text-center">
+            <i class="bi bi-check-circle-fill text-success fs-1 mb-3 d-block"></i>
+            <h1 class="section-title">Booking Confirmed!</h1>
+            <p class="text-secondary mb-4">Thank you <strong>{{ booking.full_name }}</strong>, your tour booking has been confirmed successfully on our website.</p>
+            <div class="row g-3 text-start justify-content-center">
+                <div class="col-md-4"><div class="p-3 border rounded-3 bg-light"><span class="text-secondary d-block small">Booking ID</span><strong>#{{ booking.id }}</strong></div></div>
+                <div class="col-md-4"><div class="p-3 border rounded-3 bg-light"><span class="text-secondary d-block small">Name</span><strong>{{ booking.full_name }}</strong></div></div>
+                <div class="col-md-4"><div class="p-3 border rounded-3 bg-light"><span class="text-secondary d-block small">Email</span><strong>{{ booking.email }}</strong></div></div>
+                <div class="col-md-4"><div class="p-3 border rounded-3 bg-light"><span class="text-secondary d-block small">Phone</span><strong>{{ booking.phone }}</strong></div></div>
+                <div class="col-md-4"><div class="p-3 border rounded-3 bg-light"><span class="text-secondary d-block small">Status</span><strong class="text-success">Confirmed</strong></div></div>
+            </div>
+            <div class="mt-4 d-flex gap-3 justify-content-center flex-wrap">
+                <a href="{% url 'dashboard' %}" class="btn btn-brand">View My Bookings</a>
+                <a href="{% url 'tours' %}" class="btn btn-outline-brand">Book Another Tour</a>
+            </div>
+        </div>
+        {% else %}
+        <h1 class="section-title text-center mb-5">Complete your booking</h1>
+        <div class="row g-4">
+            <div class="col-lg-7 reveal-left">
+                <form id="checkoutForm" class="summary" method="post" autocomplete="off">
+                    {% csrf_token %}
+                    <h5>Traveler details</h5>
+                    <input required class="form-control my-3" placeholder="Full name" name="full_name" autocomplete="off">
+                    <input required type="email" class="form-control mb-3" placeholder="Email" name="email" value="{{ user.email }}" autocomplete="off">
+                    <input required type="tel" class="form-control mb-4" placeholder="10-digit mobile number" name="phone"
+                           autocomplete="off" inputmode="numeric" maxlength="10" pattern="[0-9]{10}"
+                           title="Mobile number must be exactly 10 digits.">
+                    <h5>Payment</h5>
+                    <input required type="tel" class="form-control my-3" placeholder="0000 0000 0000 0000" name="card_number"
+                           autocomplete="off" inputmode="numeric" maxlength="19" pattern="[0-9 ]{16,19}"
+                           title="Card number must be 16 digits.">
+                    <div class="row g-3">
+                        <div class="col-sm-6"><input required class="form-control" placeholder="MM/YY" name="expiry" autocomplete="off" inputmode="numeric" maxlength="5" pattern="(0[1-9]|1[0-2])\/[0-9]{2}" title="Expiry as MM/YY, e.g. 08/27"></div>
+                        <div class="col-sm-6"><input required type="tel" class="form-control" placeholder="CVC" name="cvc" autocomplete="off" inputmode="numeric" maxlength="3" pattern="[0-9]{3}" title="3-digit security code"></div>
+                    </div>
+                    <button class="btn btn-brand w-100 mt-4" type="submit">Confirm booking</button>
+                </form>
+            </div>
+            <div class="col-lg-5 reveal-right">
+                <div class="summary" id="orderSummary">
+                    <!-- Rendered by JavaScript -->
+                </div>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</main>
+<script>
+    // Real-world input formatting for checkout fields:
+    // phone -> only 10 digits, card -> 16 digits grouped as 0000 0000 0000 0000,
+    // expiry -> auto "MM/YY", cvc -> 3 digits.
+    (function () {
+        var form = document.getElementById("checkoutForm");
+        var phoneEl = form ? form.querySelector('input[name="phone"]') : null;
+        var cardEl = form ? form.querySelector('input[name="card_number"]') : null;
+        var expiryEl = form ? form.querySelector('input[name="expiry"]') : null;
+        var cvcEl = form ? form.querySelector('input[name="cvc"]') : null;
+
+        function digitsOnly(value) { return (value || "").replace(/\D/g, ""); }
+
+        function formatCard(value) {
+            return digitsOnly(value).slice(0, 16).replace(/(.{4})/g, "$1 ").trim();
+        }
+
+        function formatExpiry(value) {
+            var d = digitsOnly(value).slice(0, 4);
+            return d.length >= 3 ? d.slice(0, 2) + "/" + d.slice(2) : d;
+        }
+
+        if (phoneEl) {
+            phoneEl.addEventListener("input", function () {
+                phoneEl.value = digitsOnly(phoneEl.value).slice(0, 10);
+            });
+        }
+        if (cardEl) {
+            cardEl.addEventListener("input", function () {
+                cardEl.value = formatCard(cardEl.value);
+            });
+        }
+        if (expiryEl) {
+            expiryEl.addEventListener("input", function () {
+                expiryEl.value = formatExpiry(expiryEl.value);
+            });
+        }
+        if (cvcEl) {
+            cvcEl.addEventListener("input", function () {
+                cvcEl.value = digitsOnly(cvcEl.value).slice(0, 3);
+            });
+        }
+        // Remove the formatting spaces before the server receives the card number.
+        if (form && cardEl) {
+            form.addEventListener("submit", function () {
+                cardEl.value = digitsOnly(cardEl.value).slice(0, 16);
+            });
+        }
+    })();
+</script>
+{% endblock %}

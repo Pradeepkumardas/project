@@ -1,0 +1,29 @@
+{% extends 'tours/base.html' %}
+{% load static %}
+
+{% block title %}About | TheTripMitra{% endblock %}
+
+{% block content %}
+<header class="page-banner">
+    <div class="container text-center">
+        <p class="eyebrow text-warning">Our story</p>
+        <h1>Travel planning made personal.</h1>
+    </div>
+</header>
+
+<main class="section-pad">
+    <div class="container">
+        <div class="row g-5 align-items-center">
+            <div class="col-lg-6 reveal-left">
+                <p class="eyebrow">Why TheTripMitra</p>
+                <h2 class="section-title">We help travelers choose with confidence.</h2>
+                <p class="text-secondary">TheTripMitra brings package discovery, practical guidance, and simple booking flows into one place. Our focus is making every place feel approachable, clear, and worth remembering.</p>
+                <p class="text-secondary">From short Asian escapes to long-haul holidays, every listing is arranged to help you compare duration, price, and stay options quickly.</p>
+            </div>
+            <div class="col-lg-6 reveal-right">
+                <img class="img-fluid rounded-3 shadow-sm" src="{% static 'images/hongkong1.png' %}" alt="Travel planning">
+            </div>
+        </div>
+    </div>
+</main>
+{% endblock %}

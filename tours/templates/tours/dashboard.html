@@ -1,0 +1,96 @@
+{% extends 'tours/base.html' %}
+{% load static %}
+
+{% block title %}Dashboard | TheTripMitra{% endblock %}
+
+{% block content %}
+<main class="section-pad page-offset">
+    <div class="container">
+        <div class="row mb-4 align-items-center">
+            <div class="col">
+                <p class="eyebrow text-warning mb-1">Traveler Account</p>
+                <h1 class="section-title">My Dashboard</h1>
+            </div>
+            <div class="col-auto">
+                <a href="{% url 'home' %}" class="btn btn-outline-brand">Explore More Tours</a>
+            </div>
+        </div>
+
+        <div class="row g-4 mb-5">
+            <div class="col-md-4">
+                <div class="summary p-4 h-100 reveal-left">
+                    <div class="d-flex align-items-center gap-3 mb-3">
+                        <div class="rounded-circle bg-warning bg-opacity-10 p-3 text-warning fs-4">
+                            <i class="bi bi-person-fill"></i>
+                        </div>
+                        <div>
+                            <h5 class="mb-0">Profile</h5>
+                            <small class="text-secondary">Traveler member</small>
+                        </div>
+                    </div>
+                    <p class="mb-1 text-secondary">Signed in as {{ user.first_name|default:user.username }}.</p>
+                    <a href="{% url 'profile' %}" class="btn btn-sm btn-outline-brand mt-3">View full profile</a>
+                </div>
+            </div>
+            <div class="col-md-8">
+                <div class="summary p-4 h-100 reveal-right">
+                    <h5 class="mb-3"><i class="bi bi-bag-check-fill text-warning me-2"></i> Quick Stats</h5>
+                    <div class="row g-3">
+                        <div class="col-sm-6">
+                            <div class="p-3 border rounded-3 bg-light">
+                                <span class="text-secondary d-block">Total Bookings</span>
+                                <h3 class="fw-bold mb-0 text-brand">{{ bookings|length }}</h3>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="p-3 border rounded-3 bg-light">
+                                <span class="text-secondary d-block">Account Status</span>
+                                <h3 class="fw-bold mb-0 text-success">Active</h3>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="summary p-4 reveal-up">
+            <h3 class="h4 mb-4"><i class="bi bi-journal-check me-2"></i> My Tour Bookings</h3>
+            {% if bookings %}
+            <div class="table-responsive">
+                <table class="table align-middle">
+                    <thead class="table-light">
+                        <tr>
+                            <th>ID</th>
+                            <th>Full Name</th>
+                            <th>Email</th>
+                            <th>Phone</th>
+                            <th>Booking Date</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for booking in bookings %}
+                        <tr>
+                            <td>#{{ booking.id }}</td>
+                            <td class="fw-bold">{{ booking.full_name }}</td>
+                            <td>{{ booking.email }}</td>
+                            <td>{{ booking.phone }}</td>
+                            <td>{{ booking.created_at|date:"M d, Y H:i" }}</td>
+                            <td><span class="badge bg-success">Confirmed</span></td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% else %}
+            <div class="text-center py-5">
+                <i class="bi bi-luggage fs-1 text-secondary mb-3 d-block"></i>
+                <h5>No bookings found yet</h5>
+                <p class="text-secondary mb-4">Choose a tour package and complete checkout to see your bookings here.</p>
+                <a href="{% url 'tours' %}" class="btn btn-brand">Browse Tour Packages</a>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</main>
+{% endblock %}

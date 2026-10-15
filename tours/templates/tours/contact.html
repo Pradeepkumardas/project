@@ -1,0 +1,36 @@
+{% extends 'tours/base.html' %}
+{% load static %}
+
+{% block title %}Contact | TheTripMitra{% endblock %}
+
+{% block content %}
+<header class="page-banner">
+    <div class="container text-center">
+        <p class="eyebrow text-warning">Say hello</p>
+        <h1>Let's plan something memorable.</h1>
+    </div>
+</header>
+
+<main class="section-pad">
+    <div class="container">
+        <div class="row g-4">
+            <div class="col-lg-5 reveal-left">
+                <p class="eyebrow">Contact us</p>
+                <h2 class="section-title">Tell us where you want to go.</h2>
+                <p class="text-secondary">Send your details and our travel team will help you choose a package that fits your timeline and budget.</p>
+                <div class="contact-line"><i class="bi bi-envelope"></i> hello@thetripmitra.com</div>
+                <div class="contact-line"><i class="bi bi-telephone"></i> +91 98765 43210</div>
+            </div>
+            <div class="col-lg-7 reveal-right">
+                <form class="contact-form summary" method="post">
+                    {% csrf_token %}
+                    <input required class="form-control mb-3" placeholder="Name" name="name">
+                    <input required type="email" class="form-control mb-3" placeholder="Email" name="email">
+                    <textarea required class="form-control mb-3" rows="5" placeholder="Tell us where you want to go" name="message"></textarea>
+                    <button class="btn btn-brand" type="submit">Send message</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</main>
+{% endblock %}
