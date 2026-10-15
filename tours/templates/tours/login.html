@@ -35,9 +35,9 @@
                 {% if request.GET.next %}<input type="hidden" name="next" value="{{ request.GET.next }}">{% endif %}
 
                 <div class="form-floating mb-3 auth-field">
-                    <input id="loginEmail" required type="email" class="form-control"
-                           placeholder="name@example.com" name="email" autocomplete="off">
-                    <label for="loginEmail"><i class="bi bi-envelope me-1"></i>Email address</label>
+                    <input id="loginEmail" required type="text" class="form-control"
+                           placeholder="Username or email" name="email" autocomplete="username">
+                    <label for="loginEmail"><i class="bi bi-person me-1"></i>Username or email</label>
                 </div>
 
                 <div class="form-floating mb-2 auth-field">

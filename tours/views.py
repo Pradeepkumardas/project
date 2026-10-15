@@ -73,11 +73,16 @@ def login_view(request):
         email = (request.POST.get("email") or "").strip().lower()
         password = request.POST.get("password") or ""
 
-        # Find the user by email (case-insensitive) and authenticate with their username
+        # Find the user by email or username (case-insensitive) and authenticate
         user = None
-        matched_user = User.objects.filter(email__iexact=email).first()
+        matched_user = (
+            User.objects.filter(email__iexact=email).first()
+            or User.objects.filter(username__iexact=email).first()
+        )
         if matched_user is not None:
             user = authenticate(request, username=matched_user.username, password=password)
+        if user is None:
+            user = authenticate(request, username=email, password=password)
 
         if user is not None:
             login(request, user)
